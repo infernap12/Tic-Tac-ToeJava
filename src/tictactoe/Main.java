@@ -1,38 +1,34 @@
 package tictactoe;
 
-import java.util.Queue;
 import java.util.stream.IntStream;
 
 public class Main {
     private static final Board gameBoard = new Board();
     static InputManager input = new InputManager(false);
     static GameState state = GameState.GNF;
-    static char player = 'X';
 
-    public static void main(String[] args) {
-//        Scanner scanner = new Scanner("2 2\r\n2 2\r\ntwo two\r\n1 4\r\n1 1\r\n3 3\r\n2 1\r\n3 1\r\n2 3\r\n3 2"); //testing data
-        Queue<Character> q = input.getQueue();
-        for (int j = 0; j < 3; j++) {
-            for (int i = 0; i < 3; i++) {
-                char ch = q.remove();
-                gameBoard.boardArray[j][i] = ch;
-                if (ch != ' ') {
-                    player = player == 'X' ? 'O' : 'X';
-                }
-            }
-        }
+    public static void main(String[] args) throws InterruptedException {
+        Player player1 = new Player('X');
+        Player player2 = new Player('O', Player.DifficultyLevel.EASY);
         gameBoard.print();
-//        char player = 'X';
+        Player current = player1;
         int[] coords;
 
 
-        // while (state.equals(GameState.GNF)) {
-        coords = input.getValidMove(gameBoard); //get the next valid location to play a piece
-        gameBoard.play(coords, player); //play the move into the Board
-        gameBoard.print();//print updated board
-        player = player == 'X' ? 'O' : 'X'; // toggle player to the other
-        updateGameState();
-        //  }
+        while (state.equals(GameState.GNF)) {
+            if (current.isAi()) {
+                coords = Player.aiMove(current.level, gameBoard);
+                System.out.printf("Making move level \"%s\"%n", current.level.toString().toLowerCase());
+                Thread.sleep(300);
+            } else {
+                System.out.print("Enter the coordinates: ");
+                coords = input.getValidMove(gameBoard); //get the next valid location to play a piece
+            }
+            gameBoard.play(coords, current.token); //play the move into the Board
+            gameBoard.print();//print updated board
+            current = current == player1 ? player2 : player1; // toggle player to the other
+            updateGameState();
+        }
         System.out.println(state.msg); //victory line
 
     }
@@ -82,4 +78,4 @@ public class Main {
     }
 
 }
-//not real proud of this, but I guess it's done
+
