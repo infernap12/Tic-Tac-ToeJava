@@ -19,18 +19,4 @@ public class InputManager {
         this.loggerEnabled = loggerEnabled;
     }
 
-    protected int requestIntRange(int min, int max) {
-        int intput;
-        String input = scanner.nextLine();
-        try {
-            intput = Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException("You should enter numbers!");
-        }
-        if (!(intput >= min && intput <= max)){
-            throw new NumberFormatException("Coordinates should be from 1 to 3!");
-        }
-        return intput;
-
-    }
 }

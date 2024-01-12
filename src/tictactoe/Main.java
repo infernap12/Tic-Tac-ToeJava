@@ -1,95 +1,69 @@
 package tictactoe;
 
-import java.util.Scanner;
+import java.util.Queue;
 import java.util.stream.IntStream;
-import tictactoe.Board.*;
 
 public class Main {
     private static final Board gameBoard = new Board();
-    static InputManager input = new InputManager(true);
+    static InputManager input = new InputManager(false);
     static GameState state = GameState.GNF;
+    static char player = 'X';
+
     public static void main(String[] args) {
 //        Scanner scanner = new Scanner("2 2\r\n2 2\r\ntwo two\r\n1 4\r\n1 1\r\n3 3\r\n2 1\r\n3 1\r\n2 3\r\n3 2"); //testing data
-
-        boardChar player = boardChar.TOKEN1;
+        Queue<Character> q = input.getQueue();
+        for (int j = 0; j < 3; j++) {
+            for (int i = 0; i < 3; i++) {
+                char ch = q.remove();
+                gameBoard.boardArray[j][i] = ch;
+                if (ch != ' ') {
+                    player = player == 'X' ? 'O' : 'X';
+                }
+            }
+        }
+        gameBoard.print();
+//        char player = 'X';
         int[] coords;
 
 
-        while (state.equals(GameState.GNF)) {
-            coords = getValidMove(); //        get the next valid location to play a piece
-            gameBoard.play(coords,player); //play the move into the Board
-            gameBoard.print();//print updated board
-            player = player == boardChar.TOKEN1 ? boardChar.TOKEN2: boardChar.TOKEN1; // toggle player to the other
-            updateGameState();
-        }
+        // while (state.equals(GameState.GNF)) {
+        coords = input.getValidMove(gameBoard); //get the next valid location to play a piece
+        gameBoard.play(coords, player); //play the move into the Board
+        gameBoard.print();//print updated board
+        player = player == 'X' ? 'O' : 'X'; // toggle player to the other
+        updateGameState();
+        //  }
         System.out.println(state.msg); //victory line
 
     }
 
-    private static int[] getValidMove() {
-        int[] coords;
-
-        while(true) {
-            coords = input.askCoords();
-
-//            if (!Character.isDigit(input.charAt(0)) || !Character.isDigit(input.charAt(1))) {
-//                System.out.println("You should enter numbers!");
-//                continue;
-//            }
-
-//            int x = Character.getNumericValue(input.charAt(1)) - 1;
-//            int y = Character.getNumericValue(input.charAt(0)) - 1;
-//            if (x > 2 || x < 0 || y > 2 || y < 0) {
-//                System.out.println("Coordinates should be from 1 to 3!");
-//                continue;
-//            }
-            int y = coords[0] - 1;
-            int x = coords[1] - 1;
-            if (gameBoard.boardArray[y][x] != boardChar.SPACE.ch) {
-                System.out.println("This cell is occupied! Choose another one!");
-                continue;
-            }return new int[]{y, x};
-        }
-    }
-
     private static void updateGameState() {
         int[][] lineArray = gameBoard.getLineArray();
-        boolean xTrip = false;
-        boolean oTrip = false;
-        int xCount = 0;
-        int oCount = 0;
+        boolean xTrip = false, oTrip = false;
+        int xCount = 0, oCount = 0;
+
         for (int[] line : lineArray) {
-            if (IntStream.of(line).sum() == 264) {
-                xTrip = true;
-            }
-            if (IntStream.of(line).sum() == 237) {
-                oTrip = true;
-            }
+            int sum = IntStream.of(line).sum();
+            xTrip |= (sum == 264); // 88 * 3 for 'X'
+            oTrip |= (sum == 237); // 79 * 3 for 'O'
         }
+
         for (int[] line : gameBoard.boardArray) {
             for (int cell : line) {
-                if (cell == 88) {
-                    xCount++;
-                } else if (cell == 79) {
-                    oCount++;
-                }
-
+                if (cell == 88) xCount++;
+                else if (cell == 79) oCount++;
             }
-
         }
 
+        int totalMoves = xCount + oCount;
         if ((xTrip && oTrip) || Math.abs(xCount - oCount) > 1) {
             state = GameState.IMPOSSIBLE;
-        } else if (!xTrip && !oTrip && (xCount + oCount) == 9) {
+        } else if (!xTrip && !oTrip && totalMoves == 9) {
             state = GameState.DRAW;
-        } else if (!xTrip && !oTrip && (xCount + oCount) != 9) {
+        } else if (!xTrip && !oTrip) {
             state = GameState.GNF;
-        } else if (xTrip) {
-            state = GameState.X_WINS;
-        } else if (oTrip) {
-            state = GameState.O_WINS;
         } else {
-            state = null;
+            state = xTrip ? GameState.X_WINS : GameState.O_WINS;
         }
     }
 
@@ -101,6 +75,7 @@ public class Main {
         O_WINS("O wins");
 
         final String msg;
+
         GameState(String msg) {
             this.msg = msg;
         }

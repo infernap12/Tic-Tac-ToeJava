@@ -1,38 +1,44 @@
 package tictactoe;
 
-import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class InputManager extends com.infernap12.inputUtils.InputManager {
-
-
     public InputManager(boolean loggerEnabled) {
         super(loggerEnabled);
     }
 
-    int[] askCoords() {
-        int[] output = new int[0];
-        while (true) {
-            try {
-                output = new int[]{requestIntRange(1, 3), requestIntRange(1, 3)};
-                if (this.loggerEnabled) {
-                    logger.info(Arrays.toString(output));
-                }
-            } catch (NumberFormatException n) {
-                if (this.loggerEnabled) {
-                    logger.warning(String.valueOf(n.getLocalizedMessage()));
-                }
-                System.out.println(n.getLocalizedMessage());
+    Queue<Character> getQueue() {
+        String input = scanner.nextLine().replace('_',' ');
+        Queue<Character> q = new LinkedList<>();
+        for (char c : input.toCharArray()) {
+            q.add(c);
+        }
 
-            } catch (Exception e) {
-                if (this.loggerEnabled) {
-                    logger.warning(String.valueOf(e.getLocalizedMessage()));
-                }
-                System.out.print("Error! Indeterminate error. Try again.");
+        return q;
+    }
+
+    int[] getValidMove(Board gameBoard) {
+        String input;
+
+        while (true) {
+            input = scanner.nextLine();
+            if (!input.matches("[0-9]+\\s[0-9]+")) {
+                System.out.println("You should enter numbers!");
                 continue;
             }
-            break;
+            if (!input.matches("[1-3] [1-3]")) {
+                System.out.println("Coordinates should be from 1 to 3!");
+                continue;
+            }
+            int y = Integer.parseInt(String.valueOf(input.trim().charAt(0))) - 1;
+            int x = Integer.parseInt(String.valueOf(input.trim().charAt(2))) - 1;
+            if (gameBoard.boardArray[y][x] != ' ') {
+                System.out.println("This cell is occupied! Choose another one!");
+                continue;
+            }
+            return new int[]{y, x};
         }
-        return output;
     }
 
     String askLine() {
