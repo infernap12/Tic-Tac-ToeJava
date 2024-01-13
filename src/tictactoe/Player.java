@@ -25,8 +25,8 @@ public class Player {
                 int y;
                 int x;
                 do {
-                    y = r.nextInt(2);
-                    x = r.nextInt(2);
+                    y = r.nextInt(3);
+                    x = r.nextInt(3);
                 } while (gameBoard.boardArray[y][x] != ' ');
 
                 return new int[]{y, x};
@@ -42,7 +42,7 @@ public class Player {
     enum DifficultyLevel {
         EASY,
         MEDIUM,
-        HARD
+        HARD,
 
     }
 }

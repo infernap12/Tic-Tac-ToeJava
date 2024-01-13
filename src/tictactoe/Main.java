@@ -19,7 +19,7 @@ public class Main {
             if (current.isAi()) {
                 coords = Player.aiMove(current.level, gameBoard);
                 System.out.printf("Making move level \"%s\"%n", current.level.toString().toLowerCase());
-                Thread.sleep(300);
+//                Thread.sleep(300);
             } else {
                 System.out.print("Enter the coordinates: ");
                 coords = input.getValidMove(gameBoard); //get the next valid location to play a piece
