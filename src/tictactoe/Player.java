@@ -3,22 +3,25 @@ package tictactoe;
 import java.util.Random;
 
 public class Player {
-    private final boolean ai;
     char token;
-    DifficultyLevel level;
+    PlayerType level;
 
-    public Player(char token, DifficultyLevel level) {
+    public Player(char token, PlayerType level) {
         this.token = token;
         this.level = level;
-        this.ai = true;
+    }
+    public Player(char token, String StringLevel) {
+        PlayerType level = PlayerType.valueOf(StringLevel.toUpperCase());
+        this.token = token;
+        this.level = level;
     }
 
     public Player(char token) {
         this.token = token;
-        this.ai = false;
+        this.level = PlayerType.USER;
     }
 
-    public static int[] aiMove(DifficultyLevel level, Board gameBoard) {
+    public static int[] aiMove(PlayerType level, Board gameBoard) {
         switch (level) {
             case EASY -> {
                 Random r = new Random();
@@ -36,13 +39,14 @@ public class Player {
     }
 
     public boolean isAi() {
-        return ai;
+        return this.level != PlayerType.USER;
     }
 
-    enum DifficultyLevel {
+    enum PlayerType {
         EASY,
         MEDIUM,
         HARD,
+        USER
 
     }
 }

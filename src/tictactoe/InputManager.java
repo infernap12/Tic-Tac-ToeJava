@@ -9,7 +9,7 @@ public class InputManager extends com.infernap12.inputUtils.InputManager {
     }
 
     Queue<Character> getQueue() {
-        String input = scanner.nextLine().replace('_',' ');
+        String input = scanner.nextLine().replace('_', ' ');
         Queue<Character> q = new LinkedList<>();
         for (char c : input.toCharArray()) {
             q.add(c);
@@ -48,4 +48,34 @@ public class InputManager extends com.infernap12.inputUtils.InputManager {
         }
         return input;
     }
+
+    String askCommand() {
+        while (true) {
+            System.out.print("Input command: ");
+            String input = this.askLine();
+            if (input.matches("exit")) {
+                return "exit";
+            }
+            if (input.matches("start\\s[A-Za-z]+\\s[A-Za-z]+")) {
+                String[] arr = input.split(" ");
+                boolean validP1 = isValidPlayer(arr[1].toUpperCase());
+                boolean validP2 = isValidPlayer(arr[2].toUpperCase());
+                if (validP1 && validP2) {
+                    return input;
+                }
+            } else {
+                System.out.println("Bad parameters!");
+            }
+        }
+    }
+
+    boolean isValidPlayer(String player) {
+        try {
+            Player.PlayerType.valueOf(player); // This will throw IllegalArgumentException if not valid
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
 }
