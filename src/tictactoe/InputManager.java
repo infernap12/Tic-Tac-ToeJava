@@ -33,7 +33,7 @@ public class InputManager extends com.infernap12.inputUtils.InputManager {
             }
             int y = Integer.parseInt(String.valueOf(input.trim().charAt(0))) - 1;
             int x = Integer.parseInt(String.valueOf(input.trim().charAt(2))) - 1;
-            if (gameBoard.boardArray[y][x] != ' ') {
+            if (gameBoard.boardArray[y][x].symbol != ' ') {
                 System.out.println("This cell is occupied! Choose another one!");
                 continue;
             }

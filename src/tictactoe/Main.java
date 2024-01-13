@@ -1,7 +1,5 @@
 package tictactoe;
 
-import java.util.List;
-
 public class Main {
     static InputManager input = new InputManager(false);
 
@@ -12,14 +10,12 @@ public class Main {
                 System.exit(0);
             } else {
                 String[] arr = a.split(" ");
-                Game.run(arr[1],arr[2]);
+                Game.run(arr[1], arr[2]);
             }
 
 
         }
     }
-
-
 
 
 }

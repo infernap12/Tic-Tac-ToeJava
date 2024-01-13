@@ -1,6 +1,5 @@
 package tictactoe;
 
-import java.util.stream.IntStream;
 
 public class Game {
     static final Board gameBoard = new Board();
@@ -14,13 +13,12 @@ public class Game {
         Player player2 = new Player('O', p2Type);
         Game.gameBoard.print();
         Game.current = player1;
-        int[] coords;
 
 
         while (Game.state.equals(Game.GameState.GNF)) {
             Game.turn(player1, player2);
         }
-        System.out.println(Game.state.msg); //victory line
+        System.out.println(Game.state.msg+ "\n"); //victory line
     }
 
     static void turn(Player player1, Player player2) {
@@ -40,20 +38,23 @@ public class Game {
     }
 
     static void updateGameState() {
-        int[][] lineArray = gameBoard.getLineArray();
+        Board.Cell[][] lineArray = gameBoard.getLineArray();
         boolean xTrip = false, oTrip = false;
         int xCount = 0, oCount = 0;
 
-        for (int[] line : lineArray) {
-            int sum = IntStream.of(line).sum();
-            xTrip |= (sum == 264); // 88 * 3 for 'X'
-            oTrip |= (sum == 237); // 79 * 3 for 'O'
+        for (Board.Cell[] line : lineArray) {
+            int sum = 0;
+            for (Board.Cell cell : line) {
+                sum += cell.symbol;
+                xTrip |= (sum == 264); // 88 * 3 for 'X'
+                oTrip |= (sum == 237); // 79 * 3 for 'O'
+            }
         }
 
-        for (int[] line : gameBoard.boardArray) {
-            for (int cell : line) {
-                if (cell == 88) xCount++;
-                else if (cell == 79) oCount++;
+        for (Board.Cell[] line : gameBoard.boardArray) {
+            for (Board.Cell cell : line) {
+                if (cell.symbol == 88) xCount++;
+                else if (cell.symbol == 79) oCount++;
             }
         }
 

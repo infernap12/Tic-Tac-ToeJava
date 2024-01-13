@@ -3,30 +3,38 @@ package tictactoe;
 import java.util.Arrays;
 
 public class Board {
-    final int[][] boardArray;
+    final Cell[][] boardArray;
 
 
     public Board() {
-        this.boardArray = new int[3][3];
-        for (int[] ints : boardArray) { //initial fill of the board array with spaces
-            Arrays.fill(ints, ' ');//board array is just the slots for gameplay
+        this.boardArray = new Cell[3][3];
+        for (int j = 0; j < boardArray.length; j++) {
+            for (int i = 0; i < boardArray[j].length; i++) {
+                boardArray[j][i] = new Cell(' ', new int[]{j, i});
+            }
+
+
+
         }
+//        for (Cell[] cells : boardArray) { //initial fill of the board array with spaces
+//            Arrays.fill(cells, ' ');//board array is just the slots for gameplay
+//        }
     }
 
     void print() {
         System.out.println("---------");
-        for (int[] ints : boardArray) {// for each line
+        for (Cell[] ints : boardArray) {// for each line
             System.out.print("| ");
-            for (int anInt : ints) {
-                System.out.print((char) anInt + " ");
+            for (Cell cell : ints) {
+                System.out.print(cell.symbol + " ");
             }
             System.out.println("|");
         }
         System.out.println("---------");
     }
 
-    int[][] getLineArray() {
-        int[][] lineArray = new int[8][3];
+    Cell[][] getLineArray() {
+        Cell[][] lineArray = new Cell[8][3];
         System.arraycopy(boardArray, 0, lineArray, 0, 3); //horizontal lines
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -42,8 +50,21 @@ public class Board {
         return lineArray;
     }
 
-    void play(int[] coords, char player) {
-        this.boardArray[coords[0]][coords[1]] = player;
+    void play(int[] coords, char playerToken) {
+        this.boardArray[coords[0]][coords[1]].symbol = playerToken;
     }
 
+    class Cell {
+        char symbol;
+        int[] coords = new int[2];
+
+        public Cell(char symbol, int[] coords) {
+            this.symbol = symbol;
+            this.coords = coords;
+        }
+
+        public int[] getCoords() {
+            return coords;
+        }
+    }
 }
