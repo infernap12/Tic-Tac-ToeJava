@@ -9,7 +9,7 @@ public class Game {
     static InputManager input = Main.input;
 
     static void run(String p1Type, String p2Type) {
-        Player player1 = new Player('X',p1Type);
+        Player player1 = new Player('X', p1Type);
         Player player2 = new Player('O', p2Type);
         Game.gameBoard.print();
         Game.current = player1;
@@ -18,7 +18,7 @@ public class Game {
         while (Game.state.equals(Game.GameState.GNF)) {
             Game.turn(player1, player2);
         }
-        System.out.println(Game.state.msg+ "\n"); //victory line
+        System.out.println(Game.state.msg + "\n"); //victory line
     }
 
     static void turn(Player player1, Player player2) {
@@ -34,10 +34,14 @@ public class Game {
         gameBoard.play(coords, current.token); //play the move into the Board
         gameBoard.print();//print updated board
         current = current == player1 ? player2 : player1; // toggle player to the other
-        updateGameState();
+        setGameState(getGameState(gameBoard));
     }
 
-    static void updateGameState() {
+    private static void setGameState(GameState gameState) {
+        state = gameState;
+    }
+
+    static GameState getGameState(Board gameBoard) {
         Board.Cell[][] lineArray = gameBoard.getLineArray();
         boolean xTrip = false, oTrip = false;
         int xCount = 0, oCount = 0;
@@ -60,13 +64,13 @@ public class Game {
 
         int totalMoves = xCount + oCount;
         if ((xTrip && oTrip) || Math.abs(xCount - oCount) > 1) {
-            state = GameState.IMPOSSIBLE;
+            return GameState.IMPOSSIBLE;
         } else if (!xTrip && !oTrip && totalMoves == 9) {
-            state = GameState.DRAW;
+            return GameState.DRAW;
         } else if (!xTrip && !oTrip) {
-            state = GameState.GNF;
+            return GameState.GNF;
         } else {
-            state = xTrip ? GameState.X_WINS : GameState.O_WINS;
+            return xTrip ? GameState.X_WINS : GameState.O_WINS;
         }
     }
 
