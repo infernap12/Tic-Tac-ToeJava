@@ -8,7 +8,7 @@ public class Board {
         this.boardArray = new Cell[3][3];
         for (int j = 0; j < boardArray.length; j++) {
             for (int i = 0; i < boardArray[j].length; i++) {
-                boardArray[j][i] = new Cell('', new int[]{j, i});
+                boardArray[j][i] = new Cell(' ', new int[]{j, i});
             }
 
 

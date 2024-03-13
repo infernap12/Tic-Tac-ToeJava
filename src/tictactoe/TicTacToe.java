@@ -22,6 +22,7 @@ public class TicTacToe extends JFrame {
         initComponents();
         initButtons();
         this.setVisible(true);
+        aiPlay();
     }
 
     private void initButtons() {
@@ -42,12 +43,13 @@ public class TicTacToe extends JFrame {
 
     private void buttonPress(ActionEvent e) {
         JButton button = (JButton) e.getSource();
-        if (!button.getText().isEmpty() || (game.state != Game.GameState.GNF && game.state != Game.GameState.GNS)) {
+        if (!(button.getText().isEmpty() || button.getText().matches("\\s")) || (game.state != Game.GameState.GNF && game.state != Game.GameState.GNS)) {
             return;
         }
         buttonPanel.setEnabled(false);
         String coordString = button.getName().substring(button.getName().length() - 2);
         new CustomWorker(game, Board.fromAlgebraic(coordString)).execute();
+
     }
 
     private void buttonPanelPropertyChange(PropertyChangeEvent e) {
@@ -58,7 +60,8 @@ public class TicTacToe extends JFrame {
     }
 
     private void reset(ActionEvent e) {
-
+        game = new Game("user", "user");
+        updateButtons();
     }
 
     private void initComponents() {
@@ -132,26 +135,36 @@ public class TicTacToe extends JFrame {
 
         @Override
         protected Game.GameState doInBackground() throws Exception {
+            System.out.println("hello I am a new swing worker starting my name is: " + this);
             game.turn(coords);
             return game.state;
         }
 
         @Override
         protected void done() {
+            System.out.println("Boy howdy. Hello i am the done method of: " + this);
             Game.GameState state = game.state;
             LabelStatus.setText(game.state.msg);
 
-            Board.Cell[][] boardArray = game.gameBoard.boardArray;
-            for (int y = 0; y < boardArray.length; y++) {
-                for (int x = 0; x < boardArray.length; x++) {
-                    Board.Cell cell = boardArray[y][x];
-                    buttons[y][x].setText(String.valueOf(cell));
-                }
-
-            }
+            updateButtons();
             buttonPanel.setEnabled(true);
-            if (game.current.isAi()) {
-                new CustomWorker(game, new int[]{-1, -1});
+            //ai move
+            aiPlay();
+        }
+    }
+
+    private void aiPlay() {
+        if (game.current.isAi()) {
+            new CustomWorker(game, new int[]{-1, -1}).execute();
+        }
+    }
+
+    private void updateButtons() {
+        Board.Cell[][] boardArray = game.gameBoard.boardArray;
+        for (int y = 0; y < boardArray.length; y++) {
+            for (int x = 0; x < boardArray.length; x++) {
+                Board.Cell cell = boardArray[y][x];
+                buttons[y][x].setText(String.valueOf(cell));
             }
 
         }

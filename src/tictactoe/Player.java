@@ -108,31 +108,22 @@ public class Player {
         int[] blank = new int[2];
         Board.Cell[][] lineArray = gameBoard.getLineArray();
         boolean currentDub = false, otherDub = false;
-        for (Board.Cell[] line : lineArray) {
-            int sum = 0;
-            for (Board.Cell cell : line) {
-                if (cell.symbol == ' ') {
-                    blank = cell.coords;
+        for (int i = 0; i < 2; i++) {
+            for (Board.Cell[] line : lineArray) {
+                int sum = 0;
+                for (Board.Cell cell : line) {
+                    if (cell.symbol == ' ') {
+                        blank = cell.getCoords();
+                    }
+                    sum += cell.symbol;
                 }
-                sum += cell.symbol;
-            }
-            if ((sum == ((int) symbol * 2) + (int) ' ')) {
-                return blank;
-            }
-
-        }
-        for (Board.Cell[] line : lineArray) {
-            int sum = 0;
-            for (Board.Cell cell : line) {
-                if (cell.symbol == ' ') {
-                    blank = cell.coords;
+                if ((sum == ((int) symbol * 2) + (int) ' ') && i == 0) {
+                    return blank;
+                } else if ((sum == ((int) otherSymbol * 2) + (int) ' ') && i == 1) {
+                    return blank;
                 }
-                sum += cell.symbol;
-            }
-            if ((sum == ((int) otherSymbol * 2) + (int) ' ')) {
-                return blank;
-            }
 
+            }
         }
         return getEasyMove(gameBoard);
     }
