@@ -2,31 +2,37 @@ package tictactoe;
 
 import java.util.Random;
 
-import static tictactoe.Game.current;
 import static tictactoe.Game.getGameState;
 
 public class Player {
     char token;
     PlayerType level;
+    boolean isPlayer1;
+    @Override
+    public String toString() {
+        return "" + token;
+    }
 
-    public Player(char token, PlayerType level) {
+    public Player(char token, PlayerType level, boolean isPlayer1) {
         this.token = token;
         this.level = level;
+        this.isPlayer1 = isPlayer1;
+    }
+
+    public Player(char token, PlayerType level) {
+        this(token, level, token == 'X');
     }
 
     public Player(char token, String StringLevel) {
-        PlayerType level = PlayerType.valueOf(StringLevel.toUpperCase());
-        this.token = token;
-        this.level = level;
+        this(token, PlayerType.valueOf(StringLevel.toUpperCase()));
     }
 
     public Player(char token) {
-        this.token = token;
-        this.level = PlayerType.USER;
+        this(token, PlayerType.USER);
     }
 
-    public static int[] aiMove(PlayerType level, Board gameBoard) {
-        switch (level) {
+    public int[] aiMove(Board gameBoard) {
+        switch (this.level) {
             case EASY -> {
                 return getEasyMove(gameBoard);
             }
@@ -40,10 +46,10 @@ public class Player {
         return new int[0];
     }
 
-    private static int[] getHardMove(Board gameBoard) {
+    private int[] getHardMove(Board gameBoard) {
         int bestScore = Integer.MIN_VALUE;
         int[] move = new int[2];
-        char symbol = current.token;
+        char symbol = this.token;
         char otherSymbol = symbol == 'X' ? 'O' : 'X';
         for (int j = 0; j < gameBoard.boardArray.length; j++) {
             for (int i = 0; i < gameBoard.boardArray[j].length; i++) {
@@ -63,9 +69,9 @@ public class Player {
         return move;
     }
 
-    private static int minimax(Board board, boolean isMaximising) {
+    private int minimax(Board board, boolean isMaximising) {
         Game.GameState result = getGameState(board);
-        char symbol = isMaximising ? current.token : current.token == 'X' ? 'O' : 'X';
+        char symbol = isMaximising ? this.token : this.token == 'X' ? 'O' : 'X';
         int bestScore = isMaximising ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         switch (result) {
             case IMPOSSIBLE, GNF -> {
@@ -85,10 +91,10 @@ public class Player {
                 return 0;
             }
             case X_WINS -> {
-                return current.token == 'X' ? 10 : -10;
+                return this.token == 'X' ? 10 : -10;
             }
             case O_WINS -> {
-                return current.token == 'O' ? 10 : -10;
+                return this.token == 'O' ? 10 : -10;
             }
         }
 
@@ -96,8 +102,8 @@ public class Player {
         return bestScore;
     }
 
-    private static int[] getMediumMove(Board gameBoard) {
-        char symbol = current.token;
+    private int[] getMediumMove(Board gameBoard) {
+        char symbol = this.token;
         char otherSymbol = symbol == 'X' ? 'O' : 'X';
         int[] blank = new int[2];
         Board.Cell[][] lineArray = gameBoard.getLineArray();

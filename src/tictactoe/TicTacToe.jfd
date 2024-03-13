@@ -1,0 +1,51 @@
+JFDML JFormDesigner: "8.2.1.0.348" Java: "17.0.10" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "this"
+			"$locationPolicy": 1
+			"defaultCloseOperation": 3
+			"title": "Tic Tac Toe"
+			"minimumSize": new java.awt.Dimension( 450, 0 )
+			"preferredSize": sfield com.jformdesigner.model.FormObject NULL_VALUE
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) {
+				"columns": 3
+				"rows": 3
+				"hgap": 5
+				"vgap": 5
+			} ) {
+				name: "buttonPanel"
+				"minimumSize": new java.awt.Dimension( 450, 450 )
+				"preferredSize": new java.awt.Dimension( 450, 450 )
+				addEvent( new FormEvent( "java.beans.PropertyChangeListener", "propertyChange", "buttonPanelPropertyChange", true, "enabled" ) )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "statusPanel"
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "ButtonReset"
+					"text": "Reset"
+					"horizontalAlignment": 4
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "reset", true ) )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "East"
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "LabelStatus"
+					"text": "Game is not started"
+					"horizontalAlignment": 2
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "West"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "South"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+	}
+}

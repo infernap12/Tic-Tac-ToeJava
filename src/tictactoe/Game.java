@@ -1,16 +1,26 @@
 package tictactoe;
 
 
+import java.util.Arrays;
+
 public class Game {
-    static final Board gameBoard = new Board();
-    static GameState state = GameState.GNF;
-    static Player current;
+    private final Player player1;
+    private final Player player2;
+    Player current; // the current player
+    final Board gameBoard; // the board state
+    GameState state; // current games tate
 
-    static InputManager input = Main.input;
+    public Game(String p1Type, String p2Type) {
+        this.player1 = new Player('X', p1Type);
+        this.player2 = new Player('O', p2Type);
+        this.current = this.player1;
+        this.state = GameState.GNS;
+        gameBoard = new Board();
+    }
 
-    static void run(String p1Type, String p2Type) {
-        Player player1 = new Player('X', p1Type);
-        Player player2 = new Player('O', p2Type);
+    /*static void run(String p1Type, String p2Type) {
+        player1 = new Player('X', p1Type);
+        player2 = new Player('O', p2Type);
         Game.gameBoard.print();
         Game.current = player1;
 
@@ -19,25 +29,22 @@ public class Game {
             Game.turn(player1, player2);
         }
         System.out.println(Game.state.msg + "\n"); //victory line
-    }
+    }*/
 
-    static void turn(Player player1, Player player2) {
-        int[] coords;
+    void turn(int[] coords) {
         if (current.isAi()) {
-            coords = Player.aiMove(current.level, gameBoard);
+            coords = current.aiMove(gameBoard);
             System.out.printf("Making move level \"%s\"%n", current.level.toString().toLowerCase());
 //                Thread.sleep(300);
         } else {
-            System.out.print("Enter the coordinates: ");
-            coords = input.getValidMove(gameBoard); //get the next valid location to play a piece
+            System.out.print("Captured button coords are: " + Arrays.toString(coords) + " " + Board.toAlgebraic(coords[0], coords[1]));
         }
         gameBoard.play(coords, current.token); //play the move into the Board
-        gameBoard.print();//print updated board
-        current = current == player1 ? player2 : player1; // toggle player to the other
+        current = current.isPlayer1 ? player2 : player1; // toggle player to the other
         setGameState(getGameState(gameBoard));
     }
 
-    private static void setGameState(GameState gameState) {
+    private void setGameState(GameState gameState) {
         state = gameState;
     }
 
@@ -74,12 +81,18 @@ public class Game {
         }
     }
 
-    enum GameState {
+    public enum GameState {
         IMPOSSIBLE("Impossible"),
-        GNF("Game not finished"),
+        GNF("Game in progress"),
+        GNS("Game is not started"),
         DRAW("Draw"),
         X_WINS("X wins"),
         O_WINS("O wins");
+
+        @Override
+        public String toString() {
+            return msg;
+        }
 
         final String msg;
 
