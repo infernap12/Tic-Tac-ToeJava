@@ -59,8 +59,7 @@ public class Game {
                 throw new RuntimeException(e);
             }
             coords = current.aiMove(gameBoard);
-            System.out.printf("Making move level \"%s\"%n", current.level.toString().toLowerCase());
-//                Thread.sleep(300);
+            System.out.printf("Making move level \"%s\" %s", util.capitalize(current.level.toString().toLowerCase()), Board.toAlgebraic(coords[0], coords[1]));
         } else {
             System.out.print("Captured button coords are: " + Arrays.toString(coords) + " " + Board.toAlgebraic(coords[0], coords[1]));
         }

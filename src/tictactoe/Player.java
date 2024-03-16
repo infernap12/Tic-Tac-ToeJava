@@ -7,9 +7,10 @@ import java.util.Random;
 import static tictactoe.Game.getGameState;
 
 public class Player {
-    char token;
-    PlayerType level;
-    boolean isPlayer1;
+    final char token;
+    final PlayerType level;
+    final boolean isPlayer1;
+
     @Override
     public String toString() {
         return "" + token;
@@ -51,12 +52,10 @@ public class Player {
     private int[] getHardMove(Board gameBoard) {
         int bestScore = Integer.MIN_VALUE;
         int[] move = new int[2];
-        char symbol = this.token;
-        char otherSymbol = symbol == 'X' ? 'O' : 'X';
         for (int j = 0; j < gameBoard.boardArray.length; j++) {
             for (int i = 0; i < gameBoard.boardArray[j].length; i++) {
                 if (gameBoard.boardArray[j][i].symbol == ' ') {
-                    gameBoard.boardArray[j][i].symbol = symbol;
+                    gameBoard.boardArray[j][i].symbol = this.token;
                     int score = minimax(gameBoard, false);
                     gameBoard.boardArray[j][i].symbol = ' ';
                     if (score > bestScore) {
@@ -109,7 +108,6 @@ public class Player {
         char otherSymbol = symbol == 'X' ? 'O' : 'X';
         int[] blank = new int[2];
         Board.Cell[][] lineArray = gameBoard.getLineArray();
-        boolean currentDub = false, otherDub = false;
         for (int i = 0; i < 2; i++) {
             for (Board.Cell[] line : lineArray) {
                 int sum = 0;

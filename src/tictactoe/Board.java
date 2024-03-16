@@ -13,9 +13,6 @@ public class Board {
 
 
         }
-//        for (Cell[] cells : boardArray) { //initial fill of the board array with spaces
-//            Arrays.fill(cells, ' ');//board array is just the slots for gameplay
-//        }
     }
 
     public static String toAlgebraic(int y, int x) {
@@ -60,6 +57,7 @@ public class Board {
 
     void play(int[] coords, char playerToken) {
         this.boardArray[coords[0]][coords[1]].symbol = playerToken;
+        System.out.printf(" [%c]%n", playerToken);
     }
 
     public String getCell(String coords) {
@@ -69,9 +67,10 @@ public class Board {
         return this.boardArray[y][x].toString();
     }
 
-    class Cell {
+    static class Cell {
         char symbol;
-        int[] coords = new int[2];
+        final int[] coords;
+
         public Cell(char symbol, int[] coords) {
             this.symbol = symbol;
             this.coords = coords;

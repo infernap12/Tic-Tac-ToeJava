@@ -17,17 +17,14 @@ import java.util.Arrays;
  * @author james
  */
 public class TicTacToe extends JFrame {
-    JButton[][] buttons = new JButton[3][3];
+    final JButton[][] buttons = new JButton[3][3];
     Game game;
 
     static boolean unTested = false;
 
     public TicTacToe() {
-//        game = new Game("user", "user");
         initComponents();
         initButtons();
-//        updateFromModel();
-//        LabelStatus.setText(Game.GameState.GNS.msg);
         this.setVisible(true);
         buttonPanel.setEnabled(false);
     }
@@ -38,6 +35,11 @@ public class TicTacToe extends JFrame {
         if (unTested) {
             ButtonPlayer1.setText("User");
             ButtonPlayer2.setText("User");
+            Arrays.stream(MenuGame.getMenuComponents()).filter(x -> x.getClass().equals(JMenuItem.class))
+                    .map(x -> (JMenuItem) x)
+                    .forEach(x -> x.setText(x.getText()
+                            .replaceAll("Robot", "Easy")
+                            .replaceAll("Human", "User")));
         }
     }
 
@@ -87,10 +89,6 @@ public class TicTacToe extends JFrame {
         Arrays.stream(buttonPanel.getComponents())
                 .map(x -> (JButton) x)
                 .forEach(x -> x.setText(" "));
-    }
-
-    private void Break(ActionEvent e) {
-        System.out.println("Im just here because my creator doesnt know how to use a debugger properly");
     }
 
     private void playerButtonToggle(ActionEvent e) {
@@ -165,10 +163,14 @@ public class TicTacToe extends JFrame {
         LabelStatus.setText(game.state.msg.formatted(level, game.current.token));
     }
 
+    private void Break(ActionEvent e) {
+        // TODO add your code here
+    }
+
     class CustomWorker extends SwingWorker<Game.GameState, Object> {
 
-        Game game;
-        int[] coords;
+        final Game game;
+        final int[] coords;
 
         public CustomWorker(Game game, int[] coords) {
             this.game = game;
@@ -177,14 +179,12 @@ public class TicTacToe extends JFrame {
 
         @Override
         protected Game.GameState doInBackground() {
-            System.out.println("hello I am a new swing worker starting my name is: " + this);
             game.turn(coords);
             return game.state;
         }
 
         @Override
         protected void done() {
-            System.out.println("Boy howdy. Hello i am the done method of: " + this);
             updateFromModel();
             if (unTested) {
                 buttonPanel.setEnabled(!game.current.isAi());
@@ -214,7 +214,6 @@ public class TicTacToe extends JFrame {
         buttonPanel = new JPanel();
         statusPanel = new JPanel();
         LabelStatus = new JLabel();
-        Break = new JButton();
 
         //======== this ========
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -320,13 +319,6 @@ public class TicTacToe extends JFrame {
                 LabelStatus.setHorizontalAlignment(SwingConstants.LEFT);
                 LabelStatus.setName("LabelStatus"); //NON-NLS
                 statusPanel.add(LabelStatus, BorderLayout.WEST);
-
-                //---- Break ----
-                Break.setText("Break"); //NON-NLS
-                Break.setVisible(false);
-                Break.setName("Break"); //NON-NLS
-                Break.addActionListener(e -> Break(e));
-                statusPanel.add(Break, BorderLayout.CENTER);
             }
             panel1.add(statusPanel, BorderLayout.SOUTH);
         }
@@ -353,7 +345,6 @@ public class TicTacToe extends JFrame {
     private JPanel buttonPanel;
     private JPanel statusPanel;
     private JLabel LabelStatus;
-    private JButton Break;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 
 
