@@ -1,5 +1,7 @@
 package tictactoe;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import static tictactoe.Game.getGameState;
@@ -24,7 +26,7 @@ public class Player {
     }
 
     public Player(char token, String StringLevel) {
-        this(token, PlayerType.valueOf(StringLevel.toUpperCase()));
+        this(token, PlayerType.get(StringLevel.toUpperCase()));
     }
 
     public Player(char token) {
@@ -150,7 +152,25 @@ public class Player {
         EASY,
         MEDIUM,
         HARD,
-        USER
+        USER;
+
+        @Override
+        public String toString() {
+            return util.capitalize(this.name());
+        }
+
+        public PlayerType next() {
+            ArrayList<PlayerType> list = new ArrayList<>(Arrays.stream(Player.PlayerType.values()).toList());
+            int next = (list.size() + list.indexOf(this) + 1) % list.size();
+            return list.get(next);
+        }
+
+        public static PlayerType get(String string) {
+            string = string.replaceAll("(?i)human", "USER");
+            string = string.replaceAll("(?i)robot", "EASY");
+            return PlayerType.valueOf(string);
+        }
 
     }
 }
+

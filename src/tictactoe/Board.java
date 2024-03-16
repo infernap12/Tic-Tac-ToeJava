@@ -12,7 +12,6 @@ public class Board {
             }
 
 
-
         }
 //        for (Cell[] cells : boardArray) { //initial fill of the board array with spaces
 //            Arrays.fill(cells, ' ');//board array is just the slots for gameplay
@@ -71,17 +70,16 @@ public class Board {
     }
 
     class Cell {
-        @Override
-        public String toString() {
-            return "" + symbol;
-        }
-
         char symbol;
         int[] coords = new int[2];
-
         public Cell(char symbol, int[] coords) {
             this.symbol = symbol;
             this.coords = coords;
+        }
+
+        @Override
+        public String toString() {
+            return "" + symbol;
         }
 
         public int[] getCoords() {

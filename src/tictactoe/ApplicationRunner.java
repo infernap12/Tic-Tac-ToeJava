@@ -10,6 +10,6 @@ public class ApplicationRunner {
                  UnsupportedLookAndFeelException e) {
             throw new RuntimeException(e);
         }
-        new TicTacToe();
+        new TicTacToe(true);
     }
 }

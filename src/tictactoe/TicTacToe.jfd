@@ -10,38 +10,108 @@ new FormModel {
 			"title": "Tic Tac Toe"
 			"minimumSize": new java.awt.Dimension( 450, 0 )
 			"preferredSize": sfield com.jformdesigner.model.FormObject NULL_VALUE
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) {
-				"columns": 3
-				"rows": 3
-				"hgap": 5
+			add( new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
+				name: "menuBar"
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "MenuGame"
+					"text": "Game"
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "MenuHumanHuman"
+						"text": "Human vs Human"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "MenuQuickGame", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "MenuHumanRobot"
+						"text": "Human vs Robot"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "MenuQuickGame", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "MenuRobotHuman"
+						"text": "Robot vs Human"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "MenuQuickGame", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "MenuRobotRobot"
+						"text": "Robot vs Robot"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "MenuQuickGame", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JPopupMenu$Separator" ) {
+						name: "separator"
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "MenuExit"
+						"text": "Exit"
+					} )
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "North"
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
 				"vgap": 5
 			} ) {
-				name: "buttonPanel"
-				"minimumSize": new java.awt.Dimension( 450, 450 )
-				"preferredSize": new java.awt.Dimension( 450, 450 )
-				addEvent( new FormEvent( "java.beans.PropertyChangeListener", "propertyChange", "buttonPanelPropertyChange", true, "enabled" ) )
+				name: "panel1"
+				"border": new javax.swing.border.EmptyBorder( 0, 5, 5, 5 )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) {
+					"columns": 3
+					"hgap": 25
+				} ) {
+					name: "controlPanel"
+					"border": new javax.swing.border.EmptyBorder( 0, 10, 0, 10 )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "ButtonPlayer1"
+						"text": "Human"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "playerButtonToggle", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "ButtonStartReset"
+						"text": "Start"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "startReset", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "ButtonPlayer2"
+						"text": "Human"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "playerButtonToggle", true ) )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "North"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) {
+					"columns": 3
+					"rows": 3
+					"hgap": 5
+					"vgap": 5
+				} ) {
+					name: "buttonPanel"
+					"minimumSize": new java.awt.Dimension( 450, 450 )
+					"preferredSize": new java.awt.Dimension( 450, 450 )
+					addEvent( new FormEvent( "java.beans.PropertyChangeListener", "propertyChange", "buttonPanelPropertyChange", true, "enabled" ) )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) {
+					"hgap": 5
+				} ) {
+					name: "statusPanel"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "LabelStatus"
+						"text": "Game is not started"
+						"horizontalAlignment": 2
+					}, new FormLayoutConstraints( class java.lang.String ) {
+						"value": "West"
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "Break"
+						"text": "Break"
+						"visible": false
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "Break", true ) )
+					}, new FormLayoutConstraints( class java.lang.String ) {
+						"value": "Center"
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "South"
+				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "Center"
-			} )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
-				name: "statusPanel"
-				add( new FormComponent( "javax.swing.JButton" ) {
-					name: "ButtonReset"
-					"text": "Reset"
-					"horizontalAlignment": 4
-					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "reset", true ) )
-				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "East"
-				} )
-				add( new FormComponent( "javax.swing.JLabel" ) {
-					name: "LabelStatus"
-					"text": "Game is not started"
-					"horizontalAlignment": 2
-				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "West"
-				} )
-			}, new FormLayoutConstraints( class java.lang.String ) {
-				"value": "South"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
