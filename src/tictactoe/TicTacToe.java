@@ -94,7 +94,7 @@ public class TicTacToe extends JFrame {
     private void playerButtonToggle(ActionEvent e) {
         JButton button = (JButton) e.getSource();
         if (unTested) {
-            Player.PlayerType current = Player.PlayerType.valueOf(button.getText().toUpperCase()); // Temp disable other difficulties for HS
+            Player.PlayerType current = Player.PlayerType.valueOf(button.getText().toUpperCase());
             Player.PlayerType next = current.next();
             button.setText(next.toString());
         } else {
@@ -161,10 +161,6 @@ public class TicTacToe extends JFrame {
             level = playerType.toString();
         }
         LabelStatus.setText(game.state.msg.formatted(level, game.current.token));
-    }
-
-    private void Break(ActionEvent e) {
-        // TODO add your code here
     }
 
     class CustomWorker extends SwingWorker<Game.GameState, Object> {
